@@ -1,10 +1,16 @@
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
+"use client";
+
+import { Box, Container, Stack, Typography } from "@mui/material";
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import React from "react";
 
-type Props = {};
-
-const Navbar = (props: Props) => {
+const Navbar = () => {
+  const AuthButton = dynamic(
+    () => import("@/components/UI/AuthButton/AuthButton"),
+    {
+      ssr: false,
+    }
+  );
   return (
     <Container>
       <Stack
@@ -39,9 +45,16 @@ const Navbar = (props: Props) => {
           </Typography>
         </Stack>
 
-        <Button component={Link} href="/login">
-          Login
-        </Button>
+        {/* {userInfo?.email ? (
+          <Button color="error" onClick={handleLogOut}>
+            Logout
+          </Button>
+        ) : (
+          <Button component={Link} href="/login">
+            Login
+          </Button>
+        )} */}
+        <AuthButton />
       </Stack>
     </Container>
   );
