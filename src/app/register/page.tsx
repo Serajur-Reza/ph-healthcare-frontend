@@ -1,10 +1,13 @@
 "use client";
 
 import assets from "@/assets";
+import PHForm from "@/components/Forms/PHForm";
+import PHInput from "@/components/Forms/PHInput";
 import { registerPatient } from "@/services/actions/registerPatient";
 import { userLogin } from "@/services/actions/userLogin";
 import { storeUserInfo } from "@/services/auth.services";
 import { modifyPayload } from "@/utils/modifyPayload";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Stack,
   Container,
@@ -18,21 +21,32 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
-
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
 
-type TPatientData = {
-  name: string;
-  email: string;
-  contactNumber: string;
-  address: string;
-  gender?: string;
-};
+export const patientValidationSchema = z.object({
+  name: z.string().min(1, "Please enter your name"),
+  email: z.string().email(),
+  contactNumber: z
+    .string()
+    .regex(/^\d{11}$/, "Please provide a valid phone number"),
+  address: z.string().min(1, "Please enter your address"),
+});
 
-type TPatientRegisterFormData = {
-  password: string;
-  patient: TPatientData;
+export const validationSchema = z.object({
+  password: z.string().min(6, "Must be at least 6 characters"),
+  patient: patientValidationSchema,
+});
+
+export const defaultValues = {
+  password: "",
+  patient: {
+    name: "",
+    email: "",
+    contactNumber: "",
+    address: "",
+  },
 };
 
 const Register = () => {
@@ -41,14 +55,16 @@ const Register = () => {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<TPatientRegisterFormData>();
+  } = useForm<FieldValues>();
 
   const router = useRouter();
 
-  const onSubmit: SubmitHandler<TPatientRegisterFormData> = async (values) => {
+  const handleRegister = async (values: FieldValues) => {
     values.patient.gender = "MALE";
     console.log(values);
     const data = modifyPayload(values);
+
+    const [error, setError] = useState("");
 
     try {
       const res: any = await registerPatient(data);
@@ -63,6 +79,8 @@ const Register = () => {
           storeUserInfo({ accessToken: result?.data?.accessToken });
           // toast.success(res?.message, { duration: 2000 });
           router.push("/");
+        } else {
+          setError(res?.message);
         }
       }
     } catch (error: any) {
@@ -106,63 +124,74 @@ const Register = () => {
             </Box>
           </Stack>
 
+          {error && (
+            <Box>
+              <Typography
+                sx={{
+                  backgroundColor: "red",
+                  padding: "1px",
+                  borderRadius: "2px",
+                  color: "white",
+                  marginTop: "5px",
+                }}
+              >
+                {error}
+              </Typography>
+            </Box>
+          )}
+
           <Box>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <PHForm
+              onSubmit={handleRegister}
+              resolver={zodResolver(validationSchema)}
+              defaultValues={defaultValues}
+            >
               {" "}
               <Grid container spacing={3}>
                 <Grid item md={12} my={1}>
-                  <TextField
-                    id="outlined-basic"
+                  <PHInput
+                    name="patient.name"
+                    type="text"
                     label="Name"
-                    variant="outlined"
                     size="small"
                     fullWidth={true}
-                    {...register("patient.name")}
                   />
                 </Grid>
                 <Grid item md={6} my={1}>
-                  <TextField
-                    id="outlined-basic"
+                  <PHInput
+                    name="patient.email"
                     label="Email"
                     type="email"
-                    variant="outlined"
                     size="small"
                     fullWidth={true}
-                    {...register("patient.email")}
                   />
                 </Grid>
                 <Grid item md={6} my={1}>
-                  <TextField
-                    id="outlined-basic"
+                  <PHInput
+                    name="password"
                     label="Password"
                     type="password"
-                    variant="outlined"
                     size="small"
                     fullWidth={true}
-                    {...register("password")}
                   />
                 </Grid>
 
                 <Grid item md={6} my={1}>
-                  <TextField
-                    id="outlined-basic"
+                  <PHInput
+                    name="patient.contactNumber"
                     label="Contact"
                     type="tel"
-                    variant="outlined"
                     size="small"
                     fullWidth={true}
-                    {...register("patient.contactNumber")}
                   />
                 </Grid>
                 <Grid item md={6} my={1}>
-                  <TextField
-                    id="outlined-basic"
+                  <PHInput
+                    name="patient.address"
                     label="Address"
                     type="text"
-                    variant="outlined"
                     size="small"
                     fullWidth={true}
-                    {...register("patient.address")}
                   />
                 </Grid>
               </Grid>
@@ -179,7 +208,7 @@ const Register = () => {
                   <Link href={"/login"}>Login</Link>
                 </Typography>
               </Box>
-            </form>
+            </PHForm>
           </Box>
         </Box>
       </Stack>

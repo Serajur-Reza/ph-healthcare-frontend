@@ -1,10 +1,13 @@
 "use client";
 
 import assets from "@/assets";
-import { registerPatient } from "@/services/actions/registerPatient";
+import PHForm from "@/components/Forms/PHForm";
+import PHInput from "@/components/Forms/PHInput";
 import { userLogin } from "@/services/actions/userLogin";
 import { storeUserInfo } from "@/services/auth.services";
-import { modifyPayload } from "@/utils/modifyPayload";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Password } from "@mui/icons-material";
+
 import {
   Box,
   Button,
@@ -12,32 +15,26 @@ import {
   Grid,
   Link,
   Stack,
-  TextField,
   Typography,
 } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import router from "next/router";
-import React from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { toast } from "sonner";
 
-export type TLogin = {
-  email: string;
-  password: string;
-};
+import React, { useState } from "react";
+import { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
+export const validationSchema = z.object({
+  email: z.string().email("Please enter your email"),
+  password: z.string().min(6, "Must be at least 6 characters"),
+});
 
 const Login = () => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<TLogin>();
-
   const router = useRouter();
+  const [error, setError] = useState("");
 
-  const onSubmit: SubmitHandler<TLogin> = async (values) => {
+  const handleLogin = async (values: FieldValues) => {
     try {
       const res = await userLogin(values);
       console.log(res);
@@ -45,6 +42,8 @@ const Login = () => {
         storeUserInfo({ accessToken: res?.data?.accessToken });
         toast.success(res?.message, { duration: 2000 });
         router.push("/");
+      } else {
+        setError(res?.message);
       }
     } catch (error: any) {
       console.error(error.message);
@@ -83,30 +82,46 @@ const Login = () => {
             </Box>
           </Stack>
 
+          {error && (
+            <Box>
+              <Typography
+                sx={{
+                  backgroundColor: "red",
+                  padding: "1px",
+                  borderRadius: "2px",
+                  color: "white",
+                  marginTop: "5px",
+                }}
+              >
+                {error}
+              </Typography>
+            </Box>
+          )}
+
           <Box>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <PHForm
+              onSubmit={handleLogin}
+              resolver={zodResolver(validationSchema)}
+              defaultValues={{ email: "", password: "" }}
+            >
               {" "}
               <Grid container spacing={3}>
                 <Grid item md={6} my={1}>
-                  <TextField
-                    id="outlined-basic"
+                  <PHInput
+                    name={"email"}
                     label="Email"
                     type="email"
-                    variant="outlined"
                     size="small"
                     fullWidth={true}
-                    {...register("email")}
                   />
                 </Grid>
                 <Grid item md={6} my={1}>
-                  <TextField
-                    id="outlined-basic"
+                  <PHInput
+                    name={"password"}
                     label="Password"
                     type="password"
-                    variant="outlined"
                     size="small"
                     fullWidth={true}
-                    {...register("password")}
                   />
                 </Grid>
               </Grid>
@@ -131,7 +146,7 @@ const Login = () => {
                   <Link href={"/register"}>Create an account</Link>
                 </Typography>
               </Box>
-            </form>
+            </PHForm>
           </Box>
         </Box>
       </Stack>
