@@ -41,7 +41,7 @@ const Login = () => {
       if (res?.data?.accessToken) {
         storeUserInfo({ accessToken: res?.data?.accessToken });
         toast.success(res?.message, { duration: 2000 });
-        router.push("/");
+        router.push("/dashboard");
       } else {
         setError(res?.message);
       }

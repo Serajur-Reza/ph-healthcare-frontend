@@ -1,5 +1,5 @@
 "use client";
-
+import React, { useState } from "react";
 import assets from "@/assets";
 import PHForm from "@/components/Forms/PHForm";
 import PHInput from "@/components/Forms/PHInput";
@@ -20,7 +20,6 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -78,7 +77,7 @@ const Register = () => {
         if (result?.data?.accessToken) {
           storeUserInfo({ accessToken: result?.data?.accessToken });
           // toast.success(res?.message, { duration: 2000 });
-          router.push("/");
+          router.push("/dashboard");
         } else {
           setError(res?.message);
         }
