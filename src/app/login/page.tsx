@@ -36,6 +36,7 @@ const Login = () => {
 
   const handleLogin = async (values: FieldValues) => {
     try {
+      console.log(values);
       const res = await userLogin(values);
       console.log(res);
       if (res?.data?.accessToken) {
