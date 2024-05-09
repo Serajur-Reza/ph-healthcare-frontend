@@ -33,3 +33,5 @@ export type TDrawerItems = {
   icon?: OverridableComponent<SvgIconTypeMap<{}, "svg">> & { muiName: string };
   child?: TDrawerItems[];
 };
+
+export const Gender = ["MALE", "FEMALE"];
