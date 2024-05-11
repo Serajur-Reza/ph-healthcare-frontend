@@ -9,14 +9,16 @@ import {
   useDeleteDoctorMutation,
   useGetAllDoctorsQuery,
 } from "@/redux/api/doctorApi";
-import DeleteIcon from "@mui/icons-material/Delete";
+
 import Image from "next/image";
 import { toast } from "sonner";
 import { useDebounce } from "@/redux/hooks";
+import { useRouter } from "next/navigation";
+import CreateIcon from "@mui/icons-material/Create";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Link from "next/link";
 
-type Props = {};
-
-const DoctorsPage = (props: Props) => {
+const DoctorsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const query: Record<string, any> = {};
   const [searchTerm, setSearchTerm] = useState("");
@@ -63,9 +65,16 @@ const DoctorsPage = (props: Props) => {
       align: "center",
       renderCell: ({ row }) => {
         return (
-          <IconButton onClick={() => handleDelete(row.id)} aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
+          <div>
+            <IconButton>
+              <DeleteIcon sx={{ color: "red" }} />
+            </IconButton>
+            <Link href={`/dashboard/admin/doctors/${row?.id}`}>
+              <IconButton>
+                <CreateIcon />
+              </IconButton>
+            </Link>
+          </div>
         );
       },
     },

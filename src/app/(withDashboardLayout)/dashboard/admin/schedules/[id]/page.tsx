@@ -1,14 +1,15 @@
-"use client";
-
-import { useParams } from "next/navigation";
 import React from "react";
 
-type Props = {};
+type Props = {
+  params: {
+    id: string;
+  };
+};
 
 const SingleSchedule = (props: Props) => {
-  const { id } = useParams();
+  const { params } = props;
 
-  return <div>page - {id}</div>;
+  return <div>page - {params.id}</div>;
 };
 
 export default SingleSchedule;

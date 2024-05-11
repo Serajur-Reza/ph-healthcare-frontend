@@ -15,6 +15,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { toast } from "sonner";
 import CreateIcon from "@mui/icons-material/Create";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type Props = {};
 
@@ -68,13 +69,11 @@ const SchedulesPage = (props: Props) => {
             <IconButton onClick={() => deleteHandler(row?.id)}>
               <DeleteIcon sx={{ color: "red" }} />
             </IconButton>
-            <IconButton
-              onClick={() =>
-                router.push(`/dashboard/admin/schedules/${row?.id}`)
-              }
-            >
-              <CreateIcon />
-            </IconButton>
+            <Link href={`/dashboard/admin/schedules/${row?.id}`}>
+              <IconButton>
+                <CreateIcon />
+              </IconButton>
+            </Link>
           </div>
         );
       },

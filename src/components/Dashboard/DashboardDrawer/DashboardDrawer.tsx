@@ -4,6 +4,8 @@ import * as React from "react";
 import { useState } from "react";
 import {
   AppBar,
+  Avatar,
+  Badge,
   Box,
   Button,
   CssBaseline,
@@ -16,6 +18,9 @@ import {
 
 import MenuIcon from "@mui/icons-material/Menu";
 import Sidebar from "../Sidebar/Sidebar";
+import { useGetSingleUserQuery } from "@/redux/api/userApi";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import AccountMenu from "../AccountMenu/AccoutMenu";
 
 const drawerWidth = 240;
 
@@ -27,6 +32,8 @@ export default function DashboardDrawer(props: Props) {
   const { children } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+
+  const { data, isLoading } = useGetSingleUserQuery({});
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -54,7 +61,8 @@ export default function DashboardDrawer(props: Props) {
           ml: { sm: `${drawerWidth}px` },
           background: "#F4F7FE",
           boxShadow: 0,
-          borderBottom: "1px solid lightgray",
+          borderBottom: "1px solid #ddd",
+          py: 1,
         }}
       >
         <Toolbar>
@@ -63,49 +71,47 @@ export default function DashboardDrawer(props: Props) {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" }, color: "primary.main" }}
+            sx={{ mr: 2, display: { sm: "none" } }}
           >
-            <MenuIcon />
+            <MenuIcon sx={{ color: "primary.main" }} />
           </IconButton>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <Box>
+              <Typography
+                variant="body2"
+                noWrap
+                component="div"
+                sx={{ color: "rgba(11, 17, 52, 0.6)" }}
+              >
+                Hi, {isLoading ? "Loading..." : data?.name},
+              </Typography>
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ color: "primary.main" }}
+              >
+                Welcome to PH Health Care!
+              </Typography>
+            </Box>
 
-          <Box>
-            <Typography variant="body2" noWrap component="div" color="gray">
-              Hi, Tanmoy Parvez
-            </Typography>
-            <Typography
-              variant="body2"
-              noWrap
-              component="div"
-              color="primary.main"
-            >
-              Welcome To, PH Health Care !
-            </Typography>
+            <Stack direction="row" gap={3}>
+              <Badge badgeContent={1} color="primary">
+                <IconButton sx={{ background: "#ffffff" }}>
+                  <NotificationsNoneIcon color="action" />
+                </IconButton>
+              </Badge>
+              <Avatar alt={data?.name} src={data?.profilePhoto} />
+              <AccountMenu />
+            </Stack>
           </Box>
-
-          {/* <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-            color="gray"
-          >
-            MUI
-          </Typography>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-            color="primary.main"
-          >
-            MUI
-          </Typography>
-
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {[1, 2, 3].map((item) => (
-              <Button key={item} sx={{ color: "#fff" }}>
-                {item}
-              </Button>
-            ))}
-          </Box> */}
         </Toolbar>
       </AppBar>
       <Box

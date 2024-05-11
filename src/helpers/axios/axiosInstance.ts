@@ -1,6 +1,7 @@
 import { authKey } from "@/constants/authKey";
+import { generateNewAccessToken } from "@/services/auth.services";
 import { TResponseError, TResponseSuccess } from "@/types";
-import { getFromLocalStorage } from "@/utils/local-storage";
+import { getFromLocalStorage, setToLocalStorage } from "@/utils/local-storage";
 import axios from "axios";
 
 const instance = axios.create();
@@ -40,9 +41,21 @@ instance.interceptors.response.use(
     };
     return responseObject;
   },
-  function (error) {
+  async function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
+
+    const config = error?.config;
+    console.log(config);
+
+    if (error?.response?.status === 500 && !config?.sent) {
+      config.sent = true;
+      const response = await generateNewAccessToken();
+      const accessToken = response?.data?.accessToken;
+      config.headers["Authorization"] = accessToken;
+      setToLocalStorage(authKey, accessToken);
+      return instance(config);
+    }
 
     const responseObject: TResponseError = {
       statusCode: error?.response?.data?.statusCode || 500,
