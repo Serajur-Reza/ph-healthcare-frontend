@@ -11,6 +11,7 @@ import Logout from "@mui/icons-material/Logout";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { getUserInfo } from "@/services/auth.services";
 
 const menuStyles = {
   paper: {
@@ -99,7 +100,7 @@ export default function AccountMenu() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <Link href={`/dashboard/admin/profile`}>
+        <Link href={`/dashboard/${getUserInfo()?.role}/profile`}>
           {" "}
           <MenuItem onClick={handleClose}>
             <Avatar sx={{ background: "transparent", color: "primary.main" }} />

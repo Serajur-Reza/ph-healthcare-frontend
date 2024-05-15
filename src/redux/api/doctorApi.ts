@@ -62,7 +62,7 @@ const doctorApi = baseApi.injectEndpoints({
           method: "DELETE",
         };
       },
-      invalidatesTags: [tagTypes.doctor],
+      invalidatesTags: [tagTypes.doctor, tagTypes.user],
     }),
   }),
 });

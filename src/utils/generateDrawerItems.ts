@@ -8,10 +8,18 @@ import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ReviewsIcon from "@mui/icons-material/Reviews";
 import TryIcon from "@mui/icons-material/Try";
+import Person2Icon from "@mui/icons-material/Person2";
 
 export const drawerItems = (role: TUserRole) => {
   const roleMenus: TDrawerItems[] = [];
 
+  const defaultMenus = [
+    {
+      title: "Profile",
+      path: `${role}/profile`,
+      icon: Person2Icon,
+    },
+  ];
   switch (role) {
     case USER_ROLE.SUPER_ADMIN:
       roleMenus.push(
@@ -106,5 +114,5 @@ export const drawerItems = (role: TUserRole) => {
     default:
       break;
   }
-  return [...roleMenus];
+  return [...roleMenus, ...defaultMenus];
 };

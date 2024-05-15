@@ -11,11 +11,11 @@ export interface TDoctor {
   qualification: string;
   currentWorkingPlace: string;
   designation: string;
-  specialties?: TSpecialties[];
+  specialities?: TSpecialities[];
 }
 
-export interface TSpecialties {
-  specialtiesId: string;
+export interface TSpecialities {
+  specialitiesId: string;
   isDeleted?: null;
 }
 
