@@ -1,4 +1,5 @@
 import { authKey } from "@/constants/authKey";
+import setAccessToken from "@/services/actions/setServerActions";
 import { generateNewAccessToken } from "@/services/auth.services";
 import { TResponseError, TResponseSuccess } from "@/types";
 import { getFromLocalStorage, setToLocalStorage } from "@/utils/local-storage";
@@ -45,27 +46,28 @@ instance.interceptors.response.use(
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
 
-    console.log(error);
-    return error;
+    // console.log(error);
+    // return error;
 
-    // const config = error?.config;
-    // console.log(config);
+    const config = error?.config;
+    console.log(config);
 
-    // if (error?.response?.status === 500 && !config?.sent) {
-    //   config.sent = true;
-    //   const response = await generateNewAccessToken();
-    //   const accessToken = response?.data?.accessToken;
-    //   config.headers["Authorization"] = accessToken;
-    //   setToLocalStorage(authKey, accessToken);
-    //   return instance(config);
-    // }
+    if (error?.response?.status === 500 && !config?.sent) {
+      config.sent = true;
+      const response = await generateNewAccessToken();
+      const accessToken = response?.data?.accessToken;
+      config.headers["Authorization"] = accessToken;
+      setToLocalStorage(authKey, accessToken);
+      setAccessToken(accessToken);
+      return instance(config);
+    }
 
-    // const responseObject: TResponseError = {
-    //   statusCode: error?.response?.data?.statusCode || 500,
-    //   message: error?.response?.data?.message || "Something Went Wrong",
-    //   errorMessages: error?.response?.data?.message,
-    // };
-    // return responseObject;
+    const responseObject: TResponseError = {
+      statusCode: error?.response?.data?.statusCode || 500,
+      message: error?.response?.data?.message || "Something Went Wrong",
+      errorMessages: error?.response?.data?.message,
+    };
+    return responseObject;
   }
 );
 

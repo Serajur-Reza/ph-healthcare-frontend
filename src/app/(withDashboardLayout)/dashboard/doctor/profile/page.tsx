@@ -52,8 +52,8 @@ const ProfilePage = (props: Props) => {
         setOpen={setIsModalOpen}
         id={doctorData?.id}
       />
-      <Container>
-        <Grid container spacing={2}>
+      <Container sx={{ mt: 4 }}>
+        <Grid container spacing={4}>
           <Grid xs={12} md={4}>
             <Box
               sx={{
@@ -71,15 +71,17 @@ const ProfilePage = (props: Props) => {
               />
             </Box>
 
-            {profileUpdating && <p>Uploading...</p>}
+            <Box my={3}>
+              {profileUpdating && <p>Uploading...</p>}
 
-            <AutoFileUploader
-              name="file"
-              label="choose your profile photo"
-              icon={<CloudUploadIcon />}
-              onFileUpload={fileUploadHandler}
-              variant="text"
-            />
+              <AutoFileUploader
+                name="file"
+                label="choose your profile photo"
+                icon={<CloudUploadIcon />}
+                onFileUpload={fileUploadHandler}
+                variant="text"
+              />
+            </Box>
 
             <Button
               fullWidth

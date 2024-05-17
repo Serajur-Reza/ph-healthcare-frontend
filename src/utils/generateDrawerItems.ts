@@ -1,3 +1,4 @@
+import KeyIcon from "@mui/icons-material/Key";
 import { USER_ROLE } from "@/constants/roles";
 import { TDrawerItems, TUserRole } from "@/types";
 
@@ -18,6 +19,12 @@ export const drawerItems = (role: TUserRole) => {
       title: "Profile",
       path: `${role}/profile`,
       icon: Person2Icon,
+    },
+
+    {
+      title: "Change-Password",
+      path: `change-password`,
+      icon: KeyIcon,
     },
   ];
   switch (role) {

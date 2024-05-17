@@ -12,6 +12,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getUserInfo } from "@/services/auth.services";
+import logoutUser from "@/services/actions/logoutUser";
 
 const menuStyles = {
   paper: {
@@ -110,7 +111,7 @@ export default function AccountMenu() {
 
         <Divider />
 
-        <MenuItem onClick={handleLogout}>
+        <MenuItem onClick={() => logoutUser(router)}>
           <ListItemIcon>
             <Logout fontSize="small" sx={{ color: "error.main" }} />
           </ListItemIcon>
