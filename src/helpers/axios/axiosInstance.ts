@@ -52,15 +52,15 @@ instance.interceptors.response.use(
     const config = error?.config;
     console.log(config);
 
-    if (error?.response?.status === 500 && !config?.sent) {
-      config.sent = true;
-      const response = await generateNewAccessToken();
-      const accessToken = response?.data?.accessToken;
-      config.headers["Authorization"] = accessToken;
-      setToLocalStorage(authKey, accessToken);
-      setAccessToken(accessToken);
-      return instance(config);
-    }
+    // if (error?.response?.status === 500 && !config?.sent) {
+    //   config.sent = true;
+    //   const response = await generateNewAccessToken();
+    //   const accessToken = response?.data?.accessToken;
+    //   config.headers["Authorization"] = accessToken;
+    //   setToLocalStorage(authKey, accessToken);
+    //   setAccessToken(accessToken);
+    //   return instance(config);
+    // }
 
     const responseObject: TResponseError = {
       statusCode: error?.response?.data?.statusCode || 500,

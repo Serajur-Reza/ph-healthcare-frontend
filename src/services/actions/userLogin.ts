@@ -19,10 +19,13 @@ export const userLogin = async (data: FieldValues) => {
 
   console.log(userInfo);
 
-  // const needsPasswordChange = userInfo?.needPasswordChange
+  const needsPasswordChange = userInfo?.data?.needPasswordChange;
 
   if (userInfo?.data?.accessToken) {
-    setAccessToken(userInfo?.data?.accessToken, { redirect: "/dashboard" });
+    setAccessToken(userInfo?.data?.accessToken, {
+      redirect: "/dashboard",
+      needsPasswordChange,
+    });
   }
   return userInfo;
 };

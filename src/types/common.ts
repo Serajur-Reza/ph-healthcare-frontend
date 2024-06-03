@@ -34,4 +34,10 @@ export type TDrawerItems = {
   child?: TDrawerItems[];
 };
 
+export type TMeta = {
+  page: number;
+  limit: number;
+  total: number;
+};
+
 export const Gender = ["MALE", "FEMALE"];

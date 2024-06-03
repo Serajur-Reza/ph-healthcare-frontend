@@ -58,12 +58,12 @@ const Register = () => {
 
   const router = useRouter();
 
+  const [error, setError] = useState("");
+
   const handleRegister = async (values: FieldValues) => {
     values.patient.gender = "MALE";
     console.log(values);
     const data = modifyPayload(values);
-
-    const [error, setError] = useState("");
 
     try {
       const res: any = await registerPatient(data);
