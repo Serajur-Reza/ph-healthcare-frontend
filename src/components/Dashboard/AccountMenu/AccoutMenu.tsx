@@ -54,8 +54,7 @@ export default function AccountMenu() {
   };
   const handleLogout = () => {
     setAnchorEl(null);
-    localStorage.removeItem("accessToken");
-    router.push("/login");
+    logoutUser(router);
   };
 
   return (
@@ -111,7 +110,7 @@ export default function AccountMenu() {
 
         <Divider />
 
-        <MenuItem onClick={() => logoutUser(router)}>
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" sx={{ color: "error.main" }} />
           </ListItemIcon>

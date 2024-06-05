@@ -25,56 +25,58 @@ const Navbar = () => {
     logoutUser(router);
   };
   return (
-    <Container>
-      <Stack
-        py={2}
-        direction={"row"}
-        justifyContent={"space-between"}
-        alignItems={"center"}
-      >
-        <Typography variant="h4" component={Link} href="/" fontWeight={"600"}>
-          P
-          <Box component={"span"} color={"primary.main"}>
-            H
-          </Box>
-          Health Care
-        </Typography>
+    <Box sx={{ bgcolor: "primary.main" }}>
+      <Container>
+        <Stack
+          py={2}
+          direction={"row"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+        >
+          <Typography variant="h4" component={Link} href="/" fontWeight={"600"}>
+            P
+            <Box component={"span"} color={"white"}>
+              H
+            </Box>
+            Health Care
+          </Typography>
 
-        <Stack direction={"row"} gap={4} justifyContent={"space-between"}>
-          <Typography component={Link} href="/consultaion">
-            Consultation
-          </Typography>
-          <Typography component={Link} href="/">
-            Health Plans
-          </Typography>
-          <Typography component={Link} href="/login">
-            Medicines
-          </Typography>
-          <Typography component={Link} href="/login">
-            Diagnostics
-          </Typography>
-          <Typography component={Link} href="/login">
-            NGOS
-          </Typography>
-          {userInfo?.id && (
-            <Typography component={Link} href="/dashboard">
-              Dashboard
+          <Stack direction={"row"} gap={4} justifyContent={"space-between"}>
+            <Typography component={Link} href="/consultaion" color={"white"}>
+              Consultation
             </Typography>
-          )}
-        </Stack>
+            <Typography component={Link} href="/" color={"white"}>
+              Health Plans
+            </Typography>
+            <Typography component={Link} href="/login" color={"white"}>
+              Medicines
+            </Typography>
+            <Typography component={Link} href="/login" color={"white"}>
+              Diagnostics
+            </Typography>
+            <Typography component={Link} href="/login" color={"white"}>
+              NGOS
+            </Typography>
+            {userInfo?.id && (
+              <Typography component={Link} href="/dashboard" color={"white"}>
+                Dashboard
+              </Typography>
+            )}
+          </Stack>
 
-        {userInfo?.id ? (
-          <Button color="error" onClick={handleLogOut}>
-            Logout
-          </Button>
-        ) : (
-          <Button component={Link} href="/login">
-            Login
-          </Button>
-        )}
-        {/* <AuthButton /> */}
-      </Stack>
-    </Container>
+          {userInfo?.id ? (
+            <Button color="error" onClick={handleLogOut} sx={{ boxShadow: 0 }}>
+              Logout
+            </Button>
+          ) : (
+            <Button component={Link} href="/login">
+              Login
+            </Button>
+          )}
+          {/* <AuthButton /> */}
+        </Stack>
+      </Container>
+    </Box>
   );
 };
 

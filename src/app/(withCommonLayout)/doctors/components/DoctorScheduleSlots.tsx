@@ -11,6 +11,7 @@ import { DoctorSchedule } from "@/types/doctorSchedules";
 import { dateFormatter, getTimeIn12HourFormat } from "@/utils/dateFormatter";
 
 import { Box, Button, Stack, Typography } from "@mui/material";
+import { create } from "@mui/material/styles/createTransitions";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { useRouter } from "next/navigation";
@@ -99,14 +100,30 @@ const DoctorScheduleSlots = ({ id }: { id: string }) => {
           scheduleId,
         }).unwrap();
 
-        if (res.id) {
-          const response = await initialPayment(res.id).unwrap();
+        console.log(res);
+      }
 
-          if (response.paymentUrl) {
-            router.push(response.paymentUrl);
-          }
+      if (res?.id) {
+        const response = await initialPayment(res?.id).unwrap();
+        if (response?.paymentUrl) {
+          router.push(response?.paymentUrl);
         }
       }
+
+      // if (id && scheduleId) {
+      //   const res = await createAppointment({
+      //     doctorId: id,
+      //     scheduleId,
+      //   }).unwrap();
+
+      //   if (res.id) {
+      //     const response = await initialPayment(res.id).unwrap();
+
+      //     if (response.paymentUrl) {
+      //       router.push(response.paymentUrl);
+      //     }
+      //   }
+      // }
     } catch (error) {
       console.log(error);
     }

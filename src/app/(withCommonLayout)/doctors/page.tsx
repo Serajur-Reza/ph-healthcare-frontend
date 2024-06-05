@@ -41,6 +41,8 @@ async function Doctors({ searchParams }: Props) {
             {index === data?.length - 1 ? null : <DashedLine />}
           </Box>
         ))}
+
+        {data?.length === 0 && <Box>No doctor found with this speciality</Box>}
       </Box>
     </Container>
   );

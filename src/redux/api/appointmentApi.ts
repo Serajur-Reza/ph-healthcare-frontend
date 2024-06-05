@@ -2,7 +2,6 @@ import { TMeta } from "@/types";
 
 import { baseApi } from "./baseApi";
 import { tagTypes } from "../tagTypes";
-tagTypes;
 
 export const appointmentApi = baseApi.injectEndpoints({
   endpoints: (build) => ({

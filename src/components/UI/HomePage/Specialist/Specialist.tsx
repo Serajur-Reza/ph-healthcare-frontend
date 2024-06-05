@@ -1,5 +1,6 @@
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 type Props = {};
@@ -53,6 +54,8 @@ const Specialist = async () => {
                     borderRadius: "10px",
                   },
                 }}
+                component={Link}
+                href={`/doctors?specialities=${item.title}`}
               >
                 <Image
                   src={item.icon}
